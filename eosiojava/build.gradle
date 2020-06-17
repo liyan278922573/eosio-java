@@ -39,7 +39,7 @@ dependencies {
     api 'org.slf4j:slf4j-jdk14:1.7.25'
 }
 
-def libraryGroupId = 'one.block'
+def libraryGroupId = 'com.github'
 def libraryArtifactId = 'eosiojava'
 def libraryVersion = '0.1.2'
 
