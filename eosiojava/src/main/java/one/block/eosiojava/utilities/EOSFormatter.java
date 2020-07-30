@@ -1107,7 +1107,7 @@ public class EOSFormatter {
                     }
                     break;
 
-                case PATTERN_STRING_EOS_PREFIX_PUB_K1:
+                case "PATTERN_STRING_EOS_PREFIX_PUB_K1":
                     if (invalidRipeMD160CheckSum(decodedKey, firstCheckSum,
                             SECP256K1_CHECKSUM_VALIDATION_SUFFIX.getBytes())) {
                         throw new IllegalArgumentException(

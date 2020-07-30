@@ -16,13 +16,13 @@ repositories {
     mavenCentral()
 
     //Remove maven{} block if you are not using Artifactory
-    maven {
-        credentials{
-            username artifactory_username
-            password artifactory_password
-        }
-        url artifactory_contextURL
-    }
+//    maven {
+//        credentials{
+//            username artifactory_username
+//            password artifactory_password
+//        }
+//        url artifactory_contextURL
+//    }
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -58,7 +58,22 @@ artifacts {
     archives sourcesJar
     archives javadocJar
 }
+task makeJar(type: Copy) {
+    //删除存在的
+    delete'build/libs/classes.jar'
+    //设置拷贝的文件
+    from('build/intermediates/packaged-classes/release/')
+    //打进jar包后的文件目录
+    into('build/libs/')
+    //将classes.jar放入build/libs/目录下
+    //include ,exclude参数来设置过滤
+    //（我们只关心classes.jar这个文件）
+    include('classes.jar')
+    //重命名
+//    rename ('classes.jar','classes.jar')
+}
 
+makeJar.dependsOn(build)
 publishing {
     publications {
         jar(MavenPublication) {
@@ -82,27 +97,27 @@ publishing {
 }
 
 //Remove artifactory{} block if you are not using Artifactory
-artifactory {
-    contextUrl = artifactory_contextURL
-    publish {
-        repository {
-            repoKey = artifactory_repo
-
-            username = artifactory_username
-            password = artifactory_password
-        }
-        defaults {
-            publications('jar')
-            publishArtifacts = true
-
-            properties = ['qa.level': 'basic', 'q.os': 'android', 'dev.team': 'core']
-            publishPom = true
-        }
-    }
-}
+//artifactory {
+//    contextUrl = artifactory_contextURL
+//    publish {
+//        repository {
+//            repoKey = artifactory_repo
+//
+//            username = artifactory_username
+//            password = artifactory_password
+//        }
+//        defaults {
+//            publications('jar')
+//            publishArtifacts = true
+//
+//            properties = ['qa.level': 'basic', 'q.os': 'android', 'dev.team': 'core']
+//            publishPom = true
+//        }
+//    }
+//}
 //Remove deleteOldVersion{} block if you are not using Artifactory
-task deleteOldVersion(){
-    def auth = artifactory_username + ':' + artifactory_password
-    def repo = artifactory_contextURL + '/android-libs-scratch-local' + '/one/block/eosiojava'
-    ['curl', '-XDELETE', 'POST', '-u', auth, repo].execute()
-}
+//task deleteOldVersion(){
+//    def auth = artifactory_username + ':' + artifactory_password
+//    def repo = artifactory_contextURL + '/android-libs-scratch-local' + '/one/block/eosiojava'
+//    ['curl', '-XDELETE', 'POST', '-u', auth, repo].execute()
+//}
